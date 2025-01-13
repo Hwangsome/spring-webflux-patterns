@@ -22,8 +22,9 @@ public class InventoryOrchestrator extends Orchestrator {
     @Override
     public Mono<OrchestrationRequestContext> create(OrchestrationRequestContext ctx) {
         return this.inventoryClient
-                .restore(ctx.getInventoryRequest())
-                .doOnNext(ctx::setInventoryResponse)
+                .restore(ctx.getInventoryRequest()) // Mono<InventoryResponse>
+                // doOnNext 副作用：给ctx 设置值
+                .doOnNext(ctx::setInventoryResponse) // Mono<InventoryResponse>
                 .thenReturn(ctx);
     }
 
