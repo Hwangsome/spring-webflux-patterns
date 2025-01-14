@@ -38,6 +38,8 @@ public class ReviewClient {
     最后，需要考虑所有重试都不成功的情况。
     在这种情况下，策略的默认行为是传播一个 RetryExhaustedException，封装了最后一个错误。
     可以通过使用 onRetryExhaustedThrow 方法并提供一个 ServiceException 的Generator（生成器）来覆盖这种行为：
+
+    https://springdoc.cn/spring-webflux-retry/
      */
     public Mono<List<Review>> getReviews(Integer id){
         return this.client
