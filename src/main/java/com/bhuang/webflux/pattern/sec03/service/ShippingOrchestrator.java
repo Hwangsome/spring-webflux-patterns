@@ -3,7 +3,8 @@ package com.bhuang.webflux.pattern.sec03.service;
 import com.bhuang.webflux.pattern.sec03.client.ShippingClient;
 import com.bhuang.webflux.pattern.sec03.dto.OrchestrationRequestContext;
 import com.bhuang.webflux.pattern.sec03.dto.Status;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -12,6 +13,7 @@ import java.util.function.Predicate;
 
 @Service
 public class ShippingOrchestrator extends Orchestrator{
+    private Logger logger = LoggerFactory.getLogger(ShippingOrchestrator.class.getName());
     private final ShippingClient shippingClient;
 
     public ShippingOrchestrator(ShippingClient shippingClient) {
@@ -29,7 +31,12 @@ public class ShippingOrchestrator extends Orchestrator{
 
     @Override
     public Predicate<OrchestrationRequestContext> isSuccess() {
-        return orchestrationRequestContext -> Status.SUCCESS.equals(orchestrationRequestContext.getStatus());
+
+        return orchestrationRequestContext -> {
+            logger.info(" ShippingOrchestrator orchestrationRequestContext: {}", orchestrationRequestContext);
+            return Status.SUCCESS.equals(orchestrationRequestContext.getShippingResponse().getStatus());
+        };
+
     }
 
     @Override
